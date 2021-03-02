@@ -1,0 +1,39 @@
+[ec2-user@ip-10-2-10-190 ~]$ mysql -h udacityreplica.cijy1msncgka.us-west-1.rds.amazonaws.com  -P 3306 -u admin -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 12
+Server version: 8.0.20 Source distribution
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use udacity;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> CREATE TABLE Customers (CustomerId int, CustomerName varchar(60), Address varchar(255),City varchar(255),PostalCode varchar(8), Country varchar(60) );
+ERROR 1050 (42S01): Table 'Customers' already exists
+mysql> INSERT INTO Customers (CustomerId,CustomerName, Address, City, PostalCode, Country)
+    -> VALUES (6, 'Elon', 'Tesla HQ', 'Palo Alto', '94304', 'USA');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT *  FROM Customers;
++------------+-----------------+-------------+-----------+------------+-----------+
+| CustomerId | CustomerName    | Address     | City      | PostalCode | Country   |
++------------+-----------------+-------------+-----------+------------+-----------+
+|          1 | Tom B. Erichsen | Skagen 21   | Stavanger | 4006       | Norway    |
+|          3 | Tom             | 23rd Avenue | New York  | 10116      | USA       |
+|          5 | Gates           | Main Campus | Redmond   | 98052      | USA       |
+|          2 | Brian           | Bay St      | Brighton  | 4006       | Australia |
+|          4 | Jobs            | Apple Park  | Seattle   | 95014      | USA       |
+|          6 | Elon            | Tesla HQ    | Palo Alto | 94304      | USA       |
++------------+-----------------+-------------+-----------+------------+-----------+
+6 rows in set (0.00 sec)
+
+mysql>

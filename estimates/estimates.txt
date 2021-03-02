@@ -1,0 +1,42 @@
+Availability Estimate
+Write a paragraph or two describing the achievable Recovery Time Objective (RTO) and Recovery Point Objective (RPO) for this Multi-AZ, multi-region database in terms of:
+
+Minimum RTO for a single AZ outage
+Minimum RTO for a single region outage
+Minimum RPO for a single AZ outage
+Minimum RPO for a single region outage
+
+1.- Minimum RTO for a single AZ outage
+
+For single AZ outage, database will be automatically failover to the stand by instance.
+So, it will the time it will take to instantiate the new instance.
+
+00:00 - Problem happens (0 minutes)
+00:10 - DB instance automatically switch to secondary availability zone (max 10 minutes) as DB size is small.
+
+So, an RTO of 10 minutes for this incident would be reasonable.
+
+
+2.- Minimum RTO for a single region outage
+
+In the event of region outage, the RTO will be the time to promote the read replica.
+
+00:00 - Problem happens (0 minutes)
+00:05 - An amount of time passes before an alert triggers (5 minutes)
+00:06 - Alert triggers on-all staff (1 minute)
+00:16 - On-call staff may need to get out of bed, get to computer, log in, log onto VPN (10 minutes)
+00:21 - On-call staff starts diagnosing issue (5 minutes)
+00:30 - Root cause is discovered (9 minutes)
+00:35 - Remediation started - promote read replica (5 minutes)
+00:45 - Remediation completed (10 minutes)
+
+So, an RTO of 45 minutes for this incident would be reasonable.
+
+3.- Minimum RPO for a single AZ outage
+
+RPO for recovery with an RDS Single-AZ instance failure is typically 5 minutes (the interval required for copying transaction logs to Amazon S3)
+
+4.- Minimum RPO for a single region outage
+
+Amazon RDS for MySQL uses asynchronous replication, however the replication lag is minimum for a high performance database.
+For practical purpose we can consider the replication lag of 10 mins across region. So, the  RPO for region outage is approx 10 mins.

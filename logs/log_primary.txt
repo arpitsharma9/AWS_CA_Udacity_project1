@@ -1,0 +1,83 @@
+
+Install SQL Client
+
+sudo yum install -y https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+sudo yum install -y mysql-community-client
+
+Complete!
+[ec2-user@ip-10-1-10-161 ~]$ mysql -h udacity.ct0rcwcynnen.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 286
+Server version: 8.0.20 Source distribution
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database udacity
+    -> ;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use udacity;
+Database changed
+mysql> create table test (test int,test1 varchar(20));
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> CREATE TABLE Customers (CustomerId int, CustomerName varchar(60), Address varchar(255),City varchar(255),
+    ->    PostalCode varchar(8),    Country varchar(60) );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO Customers (CustomerId,CustomerName, Address, City, PostalCode, Country)
+    -> VALUES (1, 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT *  FROM Customers;
++------------+-----------------+-----------+-----------+------------+---------+
+| CustomerId | CustomerName    | Address   | City      | PostalCode | Country |
++------------+-----------------+-----------+-----------+------------+---------+
+|          1 | Tom B. Erichsen | Skagen 21 | Stavanger | 4006       | Norway  |
++------------+-----------------+-----------+-----------+------------+---------+
+1 row in set (0.01 sec)
+
+mysql> INSERT INTO Customers (CustomerId,CustomerName, Address, City, PostalCode, Country)
+    -> VALUES (3, 'Tom', '23rd Avenue', 'New York', '10116', 'USA');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Customers (CustomerId,CustomerName, Address, City, PostalCode, Country)
+    -> VALUES (5, 'Gates', 'Main Campus', 'Redmond', '98052', 'USA');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT *  FROM Customers;
++------------+-----------------+-------------+-----------+------------+---------+
+| CustomerId | CustomerName    | Address     | City      | PostalCode | Country |
++------------+-----------------+-------------+-----------+------------+---------+
+|          1 | Tom B. Erichsen | Skagen 21   | Stavanger | 4006       | Norway  |
+|          3 | Tom             | 23rd Avenue | New York  | 10116      | USA     |
+|          5 | Gates           | Main Campus | Redmond   | 98052      | USA     |
++------------+-----------------+-------------+-----------+------------+---------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO Customers (CustomerId,CustomerName, Address, City, PostalCode, Country)
+    -> VALUES (2, 'Brian', 'Bay St','Brighton', '4006', 'Australia');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Customers (CustomerId,CustomerName, Address, City, PostalCode, Country)
+    -> VALUES (4, 'Jobs', 'Apple Park' , 'Seattle', '95014', 'USA');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT *  FROM Customers;
++------------+-----------------+-------------+-----------+------------+-----------+
+| CustomerId | CustomerName    | Address     | City      | PostalCode | Country   |
++------------+-----------------+-------------+-----------+------------+-----------+
+|          1 | Tom B. Erichsen | Skagen 21   | Stavanger | 4006       | Norway    |
+|          3 | Tom             | 23rd Avenue | New York  | 10116      | USA       |
+|          5 | Gates           | Main Campus | Redmond   | 98052      | USA       |
+|          2 | Brian           | Bay St      | Brighton  | 4006       | Australia |
+|          4 | Jobs            | Apple Park  | Seattle   | 95014      | USA       |
++------------+-----------------+-------------+-----------+------------+-----------+
+5 rows in set (0.00 sec)
