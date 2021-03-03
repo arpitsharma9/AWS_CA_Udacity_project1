@@ -1,23 +1,34 @@
 Availability Estimate
 Write a paragraph or two describing the achievable Recovery Time Objective (RTO) and Recovery Point Objective (RPO) for this Multi-AZ, multi-region database in terms of:
 
-Minimum RTO for a single AZ outage
-Minimum RTO for a single region outage
-Minimum RPO for a single AZ outage
-Minimum RPO for a single region outage
 
-1.- Minimum RTO for a single AZ outage
+1.- Minimum RTO and RPO for a single AZ outage
+https://aws.amazon.com/blogs/database/amazon-rds-under-the-hood-single-az-instance-recovery/
 
-For single AZ outage, database will be automatically failover to the stand by instance.
-So, it will the time it will take to instantiate the new instance.
+When automated backups are turned on for your DB instance, Amazon RDS automatically performs a full daily snapshot of your data. The snapshot occurs during your preferred backup window. It also captures transaction logs to Amazon S3 every 5 minutes. 
 
-00:00 - Problem happens (0 minutes)
-00:10 - DB instance automatically switch to secondary availability zone (max 10 minutes) as DB size is small.
+So, for single AZ outage, , we need to look into the following scenarios:
 
-So, an RTO of 10 minutes for this incident would be reasonable.
+A) Recoverable instance failures
+
+An Amazon RDS instance failure occurs when the underlying EC2 instance suffers a failure. In this scenario, RDS automatically tries to launch a new instance in the same Availability Zone, attach the EBS volume, and recover. 
+
+In this scenario, RTO is typically under 30 minutes.Also, RPO is zero because the EBS volume was recovered.
+
+B) Non-recoverable instance failures or EBS volume failures
+
+If RDS instance recovery attempts are unsuccessful, or the underlying EBS volume suffers a data loss failure, the instance state is set to failed. This situation requires a point-in-time recovery. 
+
+The RTO timing requires starting up a new Amazon RDS instance and then applying all changes since the last backup. So, RTO of 30 minutes for this task would be reasonable .
+
+The RPO is typically 5 minutes as point-in-time recovery captures transaction logs to S3 every 5 minutes. 
+
+C) Availability Zone disruptions
+
+This scenario is unlikely. However, in this case, The RTO would be the time it takes to start up a new RDS instance and then apply all the changes since the last backup. The RPO might be longer, up to the time the Availability Zone failure occurred.
 
 
-2.- Minimum RTO for a single region outage
+2.- Minimum RTO and RPO for a single region outage
 
 In the event of region outage, the RTO will be the time to promote the read replica.
 
@@ -32,11 +43,6 @@ In the event of region outage, the RTO will be the time to promote the read repl
 
 So, an RTO of 45 minutes for this incident would be reasonable.
 
-3.- Minimum RPO for a single AZ outage
 
-RPO for recovery with an RDS Single-AZ instance failure is typically 5 minutes (the interval required for copying transaction logs to Amazon S3)
-
-4.- Minimum RPO for a single region outage
-
-Amazon RDS for MySQL uses asynchronous replication, however the replication lag is minimum for a high performance database.
+RPO - Amazon RDS for MySQL uses asynchronous replication, however the replication lag is minimum for a high performance database.
 For practical purpose we can consider the replication lag of 10 mins across region. So, the  RPO for region outage is approx 10 mins.
